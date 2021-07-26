@@ -52,7 +52,7 @@
                     <p>{{ post.created_at }}</p>
                     <hr />
                     <!-- Preview image-->
-                    <img class="img-fluid rounded" src="https://via.placeholder.com/900x300" alt="..." />
+                    <img class="card-img-top img-fluid rounded" src="{{ post.head_image.url }}" alt="{{ post.title }}"/>
                     <hr />
                     <!-- Post content-->
                     <p> {{ post.context }} </p>
