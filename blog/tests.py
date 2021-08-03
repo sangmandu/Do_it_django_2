@@ -119,24 +119,20 @@ class TestView(TestCase):
         self.assertIn(self.post_002.author.username.upper(), main_area.text)
 
     def test_post_detail(self):
-        # 1.1 포스트가 하나 있다
         self.assertEqual(Post.objects.count(), 3)
-        # 1.2 그 포스트의 url은 `/blog/1/` 이다
+
         self.assertEqual(self.post_001.get_absolute_url(), '/blog/1/')
-        # 2. 첫번째 포스트의 상세 페이지 테스트
-        # 2.1 첫번째 포스트의 url로 접근하면 정상적으로 response가 온다(status code : 200)
         response = self.client.get(self.post_001.get_absolute_url())
         self.assertEqual(response.status_code, 200)
         soup = BeautifulSoup(response.content, 'html.parser')
-        # 2.2 포스트 목록 페이지와 똑같은 내비게이션 바가 있다.
+
         self.navbar_Test(soup)
-        # 2.3 첫번째 포스트의 제목이 웹 브라우저 탭 타이틀에 들어있다.
+        self.category_card_test(soup)
+
         self.assertIn(self.post_001.title, soup.title.text)
-        # 2.4 첫번째 포스트의 제목이 포스트 영역에 있다.
         main_area = soup.find('div', id='main-area')
         post_area = main_area.find('div', id='post-area')
         self.assertIn(self.post_001.title, post_area.text)
-        # 2.5 첫번째 포스트의 작성자(author)가 포스트 영역에 있다(아직 구현할 수 없음)
+
         self.assertIn(self.user_trump.username.upper(), post_area.text)
-        # 2.6 첫번째 포스트의 내용(content)이 포스트 영역에 있다.
         self.assertIn(self.post_001.content, post_area.text)
